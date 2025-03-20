@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Load the CSV file
-data = pd.read_csv('C:\Users\brandon.smith\OneDrive - HAECO Americas\Desktop\aircraft_parts_discrepancies.csv')
+data = pd.read_csv('aircraft_parts_discrepancies.csv')
 
 # Preprocess the data (e.g., handle missing values, normalize text)
 data['Operation_Desc'] = data['Operation_Desc'].str.lower().str.strip()
