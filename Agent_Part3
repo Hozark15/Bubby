@@ -1,0 +1,28 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Load the CSV file
+data = pd.read_csv('aircraft_parts_discrepancies.csv')
+
+# Preprocess the data (e.g., handle missing values, normalize text)
+data['Operation_Desc'] = data['Operation_Desc'].str.lower().str.strip()
+data['Item_Desc'] = data['Item_Desc'].str.lower().str.strip()
+
+# Function to find the closest match for the operation description
+def find_closest_match(operation_desc, data):
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(data['Operation_Desc'])
+    query_vec = vectorizer.transform([operation_desc])
+    similarities = cosine_similarity(query_vec, tfidf_matrix).flatten()
+    closest_match_idx = similarities.argmax()
+    return data.iloc[closest_match_idx]['Item_Desc']
+
+# Function to be called when the button is pressed
+def on_button_press(operation_desc):
+    item_description = find_closest_match(operation_desc, data)
+    print(f"Parts used historically: {item_description}")
+
+# Example button press simulation
+current_screen_operation_desc = "(TRMZ20034REH) LAV UPPER TRASH DOOR MIISING FIRE SEAL"
+on_button_press(current_screen_operation_desc)
